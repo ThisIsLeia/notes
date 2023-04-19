@@ -1,10 +1,53 @@
 from typing import List
 
+class LeetcodeService:
+    
+    @classmethod
+    def get_service_names(cls):
+        """ 取得可以使用的 services """
+        print('== 當前可以選用的 services ==')
+        for klass in cls.__subclasses__():
+            print(klass.__name__.lower())
 
-class Solution(object):
 
+    @classmethod
+    def get_service(cls, name, **kwargs):
+        for klass in cls.__subclasses__():
+            name = name.lower()
+            if klass.__name__.lower() == name:
+                print(f'== find the service [{name}] ==')
+                return klass(**kwargs)
+        raise NotImplementedError('請確認輸入名稱是否正確')
+    
+    @classmethod
+    def service_menager(cls, name, **kwargs):
+        return cls.get_service(name, **kwargs)
+
+class DP(LeetcodeService):
+    """
+    Dynamic Programing
+    """
+
+    NAME = 'dp'
+    HIDDEN = ['name', '__module__', '__doc__', 'NAME', '__init__', 'get_service_names', 'get_service', 'service_menager', '__dict__', '__weakref__', '__repr__', '__hash__', '__str__', '__getattribute__', '__setattr__', '__delattr__', '__lt__', '__le__', '__eq__', '__ne__', '__gt__', '__ge__', '__new__', '__reduce_ex__', '__reduce__', '__subclasshook__', '__init_subclass__', '__format__', '__sizeof__', '__dir__', '__class__', 'HIDDEN', 'get_assignments', 'hidden']
+
+    def __init__(self, name=NAME, hidden=HIDDEN):
+        self.name = name
+        self.hidden = hidden
+
+    def get_assignments(self):
+        assignments = [assignment for assignment in dir(self) if assignment not in self.hidden]
+        for assignment in assignments:
+            print(assignment)
+    
     def coin(self, coins, amount):
+        """
+        Dynamic Programing - Coin Change
+        """
         # Dynamic Programing (當發現必須要用兩個迴圈解題時)
+
+        coins = list(input('請輸入 coins'))
+        amount = int(input('請輸入 amount'))
         
         # 第一步：初始化數據
         # dp 数组初始化为 amount+1，因为总金额最多需要 amount 枚硬币
@@ -26,12 +69,29 @@ class Solution(object):
                     print('--------------------------------')
         print('final', dp[amount])
         return -1 if dp[amount] == amount + 1 else dp[amount]
+    
+    def aaa(self):
+        ...
+    
+
+
+class Graph(LeetcodeService):
+    ...
                 
 
-solution = Solution()
+dp = DP()
 
 if __name__ == '__main__':
-    # Dynamic Programing - Coin Change
     coins = [1,2,5]
     amount = 11
-    print(solution.coin(coins, amount))
+    # print(solution.coin(coins, amount))
+
+    LeetcodeService.get_service_names()
+
+    topic = input('請輸入欲選用主題：')
+    service = LeetcodeService.service_menager(topic)
+
+    print(f'== {topic} 可以選用的 assignments ==')
+    service.get_assignments()
+
+    assignment = input('請輸入欲選用assignment: ')
