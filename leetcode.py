@@ -29,7 +29,7 @@ class DP(LeetcodeService):
     """
 
     NAME = 'dp'
-    HIDDEN = ['name', '__module__', '__doc__', 'NAME', '__init__', 'get_service_names', 'get_service', 'service_menager', '__dict__', '__weakref__', '__repr__', '__hash__', '__str__', '__getattribute__', '__setattr__', '__delattr__', '__lt__', '__le__', '__eq__', '__ne__', '__gt__', '__ge__', '__new__', '__reduce_ex__', '__reduce__', '__subclasshook__', '__init_subclass__', '__format__', '__sizeof__', '__dir__', '__class__', 'HIDDEN', 'get_assignments', 'hidden']
+    HIDDEN = ['name', '__module__', '__doc__', 'NAME', '__init__', 'get_service_names', 'get_service', 'service_menager', '__dict__', '__weakref__', '__repr__', '__hash__', '__str__', '__getattribute__', '__setattr__', '__delattr__', '__lt__', '__le__', '__eq__', '__ne__', '__gt__', '__ge__', '__new__', '__reduce_ex__', '__reduce__', '__subclasshook__', '__init_subclass__', '__format__', '__sizeof__', '__dir__', '__class__', 'HIDDEN', 'get_assignments', 'hidden', 'assignments_manager']
 
     def __init__(self, name=NAME, hidden=HIDDEN):
         self.name = name
@@ -39,16 +39,21 @@ class DP(LeetcodeService):
         assignments = [assignment for assignment in dir(self) if assignment not in self.hidden]
         for assignment in assignments:
             print(assignment)
+
+    def assignments_manager(self, assignment_name):
+        assignment = self.__class__.__dict__.get(assignment_name)
+        if assignment:
+            return assignment()
     
-    def coin(self, coins, amount):
+    def coin():
         """
         Dynamic Programing - Coin Change
         """
         # Dynamic Programing (當發現必須要用兩個迴圈解題時)
 
-        coins = list(input('請輸入 coins'))
-        amount = int(input('請輸入 amount'))
-        
+        coins = list(map(lambda x: int(x), (input('請輸入 coins: ')).split(",")))
+        amount = int(input('請輸入 amount: '))
+
         # 第一步：初始化數據
         # dp 数组初始化为 amount+1，因为总金额最多需要 amount 枚硬币
         dp = [amount + 1] * (amount + 1)
@@ -82,10 +87,6 @@ class Graph(LeetcodeService):
 dp = DP()
 
 if __name__ == '__main__':
-    coins = [1,2,5]
-    amount = 11
-    # print(solution.coin(coins, amount))
-
     LeetcodeService.get_service_names()
 
     topic = input('請輸入欲選用主題：')
@@ -95,3 +96,4 @@ if __name__ == '__main__':
     service.get_assignments()
 
     assignment = input('請輸入欲選用assignment: ')
+    service.assignments_manager(assignment)
